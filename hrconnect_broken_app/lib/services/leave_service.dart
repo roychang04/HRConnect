@@ -14,15 +14,19 @@ class LeaveService {
       throw Exception('End date cannot be before start date.');
     }
 
-    if (request.totalDays < employee.leaveBalance) {
-      throw Exception('Not enough leave balance.');
-    }
+    if (request.totalDays > employee.leaveBalance) {//change from request.totalDays > employee.leaveBalance
+  throw Exception('Not enough leave balance.');
+}
 
-    if (request.reason.trim().isEmpty) {
-      throw Exception('Reason is required.');
-    }
+if (request.reason.trim().isEmpty) {
+  throw Exception('Reason is required.');
+}
 
-    _requests.add(request);
-    return 'Leave application submitted successfully.';
+// Deduct leave balance
+employee.leaveBalance -= request.totalDays;
+
+_requests.add(request);
+
+return 'Leave application submitted successfully. Remaining balance: ${employee.leaveBalance} day(s).';//added employee leave balance in the message
   }
 }
