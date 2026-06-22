@@ -4,6 +4,7 @@ import '../data/mock_hr_data.dart';
 import '../models/app_user.dart';
 import '../models/leave_request.dart';
 import '../services/employee_service.dart';
+import '../models/employee.dart'; //added this import
 import '../services/leave_service.dart';
 
 class LeaveApplicationScreen extends StatefulWidget {
@@ -20,11 +21,19 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
   final _reasonController = TextEditingController();
   final _employeeService = const EmployeeService();
   final _leaveService = LeaveService();
+  Employee? _employee;//added this line
 
   String? _selectedLeaveType;
   DateTime? _startDate;
   DateTime? _endDate;
 
+  @override//added this method
+void initState() {
+  super.initState();
+  _employee = _employeeService.getEmployeeById(
+    widget.user.employeeId,
+  );
+}
   @override
   void dispose() {
     _reasonController.dispose();
@@ -39,8 +48,8 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
       lastDate: DateTime(2026, 12, 31),
     );
     if (picked != null) {
-      setState(() => _startDate = picked);
-    }
+  setState(() => _startDate = picked);
+}
   }
 
   Future<void> _pickEndDate() async {
@@ -50,8 +59,8 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
       firstDate: DateTime(2026, 1, 1),
       lastDate: DateTime(2026, 12, 31),
     );
-    if (picked != null) {
-      setState(() => _startDate = picked);
+    if (picked != null) {//change from start to end
+      setState(() => _endDate = picked);
     }
   }
 
@@ -65,7 +74,7 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
       return;
     }
 
-    final employee = _employeeService.getEmployeeById(widget.user.employeeId);
+    final employee = _employee;//change from final employee = _employeeService.getEmployeeById(widget.user.employeeId);
     if (employee == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Employee record not found.')),
@@ -109,7 +118,7 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final employee = _employeeService.getEmployeeById(widget.user.employeeId);
+    
 
     return Scaffold(
       appBar: AppBar(title: const Text('Leave Application')),
@@ -118,13 +127,15 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            if (employee != null)
-              Card(
-                child: ListTile(
-                  title: Text(employee.fullName),
-                  subtitle: Text('Leave balance: ${employee.leaveBalance} days'),
-                ),
-              ),
+            if (_employee != null)
+  Card(
+    child: ListTile(
+      title: Text(_employee!.fullName),
+      subtitle: Text(
+        'Leave balance: ${_employee!.leaveBalance} days',//change from leave balance: ${employee.leaveBalance} days
+      ),
+    ),
+  ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               value: _selectedLeaveType,
