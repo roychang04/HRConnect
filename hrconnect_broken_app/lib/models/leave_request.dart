@@ -15,5 +15,5 @@ class LeaveRequest {
     this.status = 'Pending',
   });
 
-  int get totalDays => endDate.difference(startDate).inDays;
+  int get totalDays => endDate.difference(startDate).inDays + 1;//count both start and end date
 }
