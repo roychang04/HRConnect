@@ -35,7 +35,7 @@ class EmployeeDetailScreen extends StatelessWidget {
           _InfoTile(label: 'Staff ID', value: employee.id),
           _InfoTile(label: 'Department', value: employee.department),
           _InfoTile(label: 'Email', value: employee.email),
-          _InfoTile(label: 'Phone', value: employee.email),
+          _InfoTile(label: 'Phone', value: employee.phone),//change employee.email to employee.phone
           _InfoTile(label: 'Manager', value: employee.managerName),
           _InfoTile(label: 'Leave Balance', value: '${employee.leaveBalance} days'),
           _InfoTile(label: 'Status', value: employee.isActive ? 'Active' : 'Inactive'),
