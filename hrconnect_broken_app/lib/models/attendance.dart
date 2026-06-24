@@ -16,7 +16,7 @@ class Attendance {
   factory Attendance.fromJson(Map<String, dynamic> json) {
     return Attendance(
       employeeId: json['employeeId'] as String,
-      date: DateTime.parse(json['date'] as String),
+      date: DateTime.parse(json['dateTime'] as String),
       checkIn: json['checkIn'] as String,
       checkOut: json['checkOut'] as String,
       status: json['status'] as String,
@@ -24,8 +24,4 @@ class Attendance {
   }
 
   bool get isLate => status.toLowerCase() == 'late';
-
-  bool get isPresent => status.toLowerCase() == 'present';
-
-  bool get isAbsent => status.toLowerCase() == 'absent';
 }
