@@ -24,38 +24,81 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Employee Directory')),
       body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: TextField(
-              decoration: const InputDecoration(
-                labelText: 'Search by name, department, or position',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                _query = value;
-              },
-            ),
-          ),
-          ListView.builder(
-            itemCount: employees.length,
-              itemBuilder: (context, index) {
-                final employee = employees[index];
-                return EmployeeCard(
-                  employee: employee,
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/employeeDetail',
-                      arguments: employee.id,
-                    );
-                  },
-                );
-              },
-            ),
-        ],
+  children: [
+
+    // Search box at the top
+    Padding(
+      padding: const EdgeInsets.all(16),
+      child: TextField(
+        decoration: const InputDecoration(
+          labelText: 'Search by name, department, or position',
+          prefixIcon: Icon(Icons.search),
+          border: OutlineInputBorder(),
+        ),
+
+        // CHANGED:
+        // setState() tells Flutter to rebuild the screen
+        // whenever the search text changes.
+        // Without setState(), _query changes but the UI
+        // never refreshes.
+        onChanged: (value) {
+          setState(() {
+            _query = value;
+          });
+        },
       ),
+    ),
+
+    // CHANGED:
+    // Expanded gives ListView the remaining available space.
+    // Without Expanded, ListView inside Column has no height,
+    // causing the page to appear empty.
+    Expanded(
+      child: ListView.builder(
+
+        // Number of employees to display
+        itemCount: employees.length,
+
+        itemBuilder: (context, index) {
+
+          // Get employee at current index
+          final employee = employees[index];
+
+          return EmployeeCard(
+            employee: employee,
+
+            onTap: () {
+
+              // CHANGED:
+              // Route name must match the route defined
+              // in main.dart.
+              //
+              // WRONG:
+              // '/employeeDetail'
+              //
+              // CORRECT:
+              // '/employee-details'
+              Navigator.pushNamed(
+                context,
+                '/employee-details',
+
+                // CHANGED:
+                // EmployeeDetailScreen expects an Employee object.
+                //
+                // WRONG:
+                // arguments: employee.id
+                //
+                // CORRECT:
+                // arguments: employee
+                arguments: employee,
+              );
+            },
+          );
+        },
+      ),
+    ),
+  ],
+),
     );
   }
 }
