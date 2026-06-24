@@ -5,11 +5,11 @@ class Employee {
   final String position;
   final String email;
   final String phone;
-  final int leaveBalance;
+  int leaveBalance;//remove final
   final String managerName;
   final bool isActive;
 
-  const Employee({
+  Employee({
     required this.id,
     required this.fullName,
     required this.department,
