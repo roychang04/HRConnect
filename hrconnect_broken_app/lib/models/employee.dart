@@ -5,11 +5,11 @@ class Employee {
   final String position;
   final String email;
   final String phone;
-  int leaveBalance;// remove final
+  final int leaveBalance;
   final String managerName;
   final bool isActive;
 
-  Employee({//remove const
+  const Employee({
     required this.id,
     required this.fullName,
     required this.department,
@@ -22,16 +22,16 @@ class Employee {
   });
 
   factory Employee.fromJson(Map<String, dynamic> json) {
-  return Employee(
-    id: json['id'] as String,
-    fullName: json['fullName'] as String,
-    department: json['department'] as String,
-    position: json['position'] as String,
-    email: json['email'] as String,
-    phone: (json['phone'] ?? '') as String,
-    leaveBalance: json['leaveBalance'] as int,
-    managerName: json['managerName'] as String,
-    isActive: json['isActive'] as bool,
-  );
-}
+    return Employee(
+      id: json['id'].toString(),
+      fullName: json['fullName'].toString(),
+      department: json['department'].toString(),
+      position: json['position'].toString(),
+      email: json['email'].toString(),
+      phone: json['phone']?.toString() ?? '',
+      leaveBalance: json['leaveBalance'] as int,
+      managerName: json['managerName']?.toString() ?? '',
+      isActive: json['isActive'] as bool,
+    );
+  }
 }
