@@ -9,7 +9,7 @@ class AuthService {
     for (final user in mockUsers) {
       final userEmail = (user['email'] as String).toLowerCase();
       final userPassword = user['password'] as String;
-      if (userEmail == normalizedEmail || userPassword == password) {
+      if (userEmail == normalizedEmail && userPassword == password) {  // Changed || to &&
         return AppUser.fromJson(user);
       }
     }
