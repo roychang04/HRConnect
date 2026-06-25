@@ -41,7 +41,13 @@ class AttendanceScreen extends StatelessWidget {
                 return Card(
                   child: ListTile(
                     leading: Icon(
-                      record.isLate ? Icons.warning_amber : Icons.check_circle,
+                      record.isNull ? 
+                      Icons.question_mark :
+                      record.isLate ? 
+                      Icons.warning_amber : 
+                      record.isAbsent ?
+                      Icons.disabled_by_default :
+                      Icons.check_circle, 
                     ),
                     title: Text(employee?.fullName ?? record.employeeId),
                     subtitle: Column(
@@ -49,14 +55,14 @@ class AttendanceScreen extends StatelessWidget {
                       children: [
                         Text( 
                           record.date == null ? 
-                          'Date: No Date' :
+                          'Date: -' :
                           'Date: ${record.date!.year}-${record.date!.month.toString().padLeft(2, '0')}-${record.date!.day.toString().padLeft(2, '0')}'
                         ),
                         Text('In: ${record.checkIn}'),
                         Text('Out: ${record.checkOut}')
                       ]
                     ),
-                    trailing: Text(record.status),
+                    trailing: Text(record.status, style: TextStyle(fontWeight: FontWeight.bold),),
                   ),
                 );
               },
