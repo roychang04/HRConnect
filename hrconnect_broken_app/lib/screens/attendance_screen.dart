@@ -13,10 +13,20 @@ class AttendanceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final employeeService = const EmployeeService();
-    final records = mockAttendance.map(Attendance.fromJson).where((record) {
+    final records = mockAttendance
+    .map((e) {
+      try {
+        return Attendance.fromJson(e);
+      } catch (_) {
+        return null;
+      }
+    })
+    .whereType<Attendance>()
+    .where((record) {
       if (user.isHr) return true;
       return record.employeeId == user.id;
-    }).toList();
+    })
+    .toList();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Attendance')),
@@ -34,10 +44,17 @@ class AttendanceScreen extends StatelessWidget {
                       record.isLate ? Icons.warning_amber : Icons.check_circle,
                     ),
                     title: Text(employee?.fullName ?? record.employeeId),
-                    subtitle: Text(
-                      '${record.date.year}-${record.date.month.toString().padLeft(2, '0')}-${record.date.day.toString().padLeft(2, '0')}
-'
-                      'In: ${record.checkIn} | Out: ${record.checkOut}',
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text( 
+                          record.date == null ? 
+                          'Date: No Date' :
+                          'Date: ${record.date!.year}-${record.date!.month.toString().padLeft(2, '0')}-${record.date!.day.toString().padLeft(2, '0')}'
+                        ),
+                        Text('In: ${record.checkIn}'),
+                        Text('Out: ${record.checkOut}')
+                      ]
                     ),
                     trailing: Text(record.status),
                   ),
