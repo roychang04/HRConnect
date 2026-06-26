@@ -17,9 +17,19 @@ class EmployeeService {
 
   List<Employee> searchEmployees(String query) {
     if (query.isEmpty) return getEmployees();
+    //CHANGED: 
+    //Issues: Case-sensitive， did not search department, position and employee ID
+
+    //now the search function is ignores uppercase/lowercase differences 
+    //can searches by name, department, position, and employee ID.
+
+    final q = query.toLowerCase();
 
     return getEmployees().where((employee) {
-      return employee.fullName.contains(query);
+      return employee.fullName.toLowerCase().contains(q) ||
+          employee.department.toLowerCase().contains(q) ||
+          employee.position.toLowerCase().contains(q) ||
+          employee.id.toLowerCase().contains(q);
     }).toList();
   }
 }
