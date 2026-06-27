@@ -30,31 +30,50 @@ class HRConnectApp extends StatelessWidget {
         switch (settings.name) {
           case '/':
             return MaterialPageRoute(builder: (_) => const LoginScreen());
+
           case '/dashboard':
             final user = settings.arguments as AppUser;
+
             return MaterialPageRoute(
               builder: (_) => DashboardScreen(user: user),
             );
+
           case '/employees':
             final user = settings.arguments as AppUser;
+
+            // added: employees are redirected to their personal dashboard
+            // if they reach this HR-only route.
+            if (!user.isHr) {
+              return MaterialPageRoute(
+                builder: (_) => DashboardScreen(user: user),
+              );
+            }
+
             return MaterialPageRoute(
               builder: (_) => EmployeeListScreen(user: user),
             );
+
           case '/employee-details':
             final employee = settings.arguments as Employee;
+
             return MaterialPageRoute(
               builder: (_) => EmployeeDetailScreen(employee: employee),
             );
+
           case '/leave':
             final user = settings.arguments as AppUser;
+
             return MaterialPageRoute(
               builder: (_) => LeaveApplicationScreen(user: user),
             );
+
           case '/attendance':
             final user = settings.arguments as AppUser;
+
             return MaterialPageRoute(
               builder: (_) => AttendanceScreen(user: user),
             );
+
           default:
             return MaterialPageRoute(builder: (_) => const LoginScreen());
         }

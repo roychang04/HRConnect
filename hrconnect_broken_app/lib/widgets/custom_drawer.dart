@@ -24,6 +24,7 @@ class CustomDrawer extends StatelessWidget {
             title: const Text('Dashboard'),
             onTap: () {
               Navigator.pop(context);
+
               Navigator.pushReplacementNamed(
                 context,
                 '/dashboard',
@@ -37,7 +38,14 @@ class CustomDrawer extends StatelessWidget {
               title: const Text('Employees'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/employee', arguments: user);
+
+                // CHANGED: '/employees' matches the route registered
+                // in main.dart.
+                Navigator.pushNamed(
+                  context,
+                  '/employees',
+                  arguments: user,
+                );
               },
             ),
           ListTile(
@@ -45,7 +53,12 @@ class CustomDrawer extends StatelessWidget {
             title: const Text('Leave Application'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/leave', arguments: user);
+
+              Navigator.pushNamed(
+                context,
+                '/leave',
+                arguments: user,
+              );
             },
           ),
           ListTile(
@@ -53,7 +66,12 @@ class CustomDrawer extends StatelessWidget {
             title: const Text('Attendance'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/attendance', arguments: user);
+
+              Navigator.pushNamed(
+                context,
+                '/attendance',
+                arguments: user,
+              );
             },
           ),
           const Divider(),
@@ -61,7 +79,11 @@ class CustomDrawer extends StatelessWidget {
             leading: const Icon(Icons.logout),
             title: const Text('Logout'),
             onTap: () {
-              Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/',
+                (route) => false,
+              );
             },
           ),
         ],
